@@ -1,0 +1,259 @@
+---
+title: "Lista 3 - CP2"
+author: "Davi Wentrick Feijó"
+date: "2024-07-01"
+output:
+  rmdformats::downcute:
+    self_contained: true
+    default_style: "light"
+    downcute_theme: "default"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Funcoes Geradoras de Momento
+
+### Binomial
+
+Temos que a funcao da distribuicao binomial é:
+
+$$
+b(x ; n, p)=\frac{n!}{x!(n-x)!} p^x (1-p)^{n-x} \quad 
+$$
+
+A funcao geradora de momentos é dado por:
+
+$$
+\begin{aligned}
+M_x(t) & =\sum_{x=0}^n e^{x t} \frac{n!}{x!(n-x)!} p^x (1-p)^{n-x} \\
+       & =\sum_{x=0}^n\left(p e^t\right)^x \frac{n!}{x!(n-x)!} (1-p)^{n-x} \\
+\end{aligned}
+$$
+Para seguir com a resolucao é necessario reconhecer que a expressao que chegamos é uma expansao do binomio $(a+b)^n$, onde:
+
+- $a = pe^t$
+- $b = 1-p$
+
+$$
+\sum_{k=0}^n\binom{n}{k} a^k b^{n-k}=(a+b)^n
+$$
+
+Substituindo $a$ e $b$ temos:
+
+$$
+M_X(t)=\left(p e^t+1-p\right)^n
+$$
+
+## Primeiro Momento (Esperança)
+
+O primeiro momento, ou a esperança \( \mathbb{E}[X] \), pode ser encontrado utilizando a MGF. A esperança é a primeira derivada da MGF avaliada em \( t = 0 \).
+
+$$
+\mathbb{E}[X] = M_X'(0)
+$$
+
+### Cálculo
+
+1. Derivada da MGF:
+
+$$
+M_X'(t) = \frac{d}{dt} \left( (pe^t + 1 - p)^n \right)
+$$
+
+2. Aplicando a regra da cadeia:
+
+$$
+M_X'(t) = n \cdot (pe^t + 1 - p)^{n-1} \cdot pe^t
+$$
+
+Obs: Estamos derivando em relacao a $t$
+
+3. Avaliando em \( t = 0 \):
+
+$$
+\begin{aligned}
+   M_X'(0) &= n \cdot (p \cdot e^0 + 1 - p)^{n-1} \cdot p \cdot e^0  \\
+   M_X'(0) &= n \cdot (p + 1 - p)^{n-1} \cdot p  \\
+   M_X'(0) &= n \cdot 1^{n-1} \cdot p \\
+   M_X'(0) &= np \\
+\end{aligned}
+$$
+
+Portanto, a esperança é:
+
+$$
+\mathbb{E}[X] = np
+$$
+
+## Segundo Momento
+
+O segundo momento, \( \mathbb{E}[X^2] \), é a segunda derivada da MGF avaliada em \( t = 0 \).
+
+$$
+\mathbb{E}[X^2] = M_X''(0)
+$$
+
+### Cálculo
+
+1. Segunda derivada da MGF:
+
+$$
+M_X''(t) = \frac{d^2}{dt^2} \left( (pe^t + 1 - p)^n \right)
+$$
+
+2. Derivando novamente, usando a regra do produto e da cadeia:
+
+$$
+\begin{aligned}
+   M_X''(t) &= n \cdot \left[ (pe^t + 1 - p)^{n-1} \cdot pe^t \right]' \\
+   M_X''(t) &= n \cdot \left[ (n-1) \cdot (pe^t + 1 - p)^{n-2} \cdot (pe^t) \cdot pe^t + (pe^t + 1 - p)^{n-1} \cdot pe^t \right]
+\end{aligned}
+$$
+
+3. Avaliando em \( t = 0 \):
+
+$$
+\begin{aligned}
+   M_X''(0) &= n \cdot \left[ (n-1) \cdot (p \cdot e^0 + 1 - p)^{n-2} \cdot (p \cdot e^0)^2 + (p \cdot e^0 + 1 - p)^{n-1} \cdot p \cdot e^0 \right] \\
+   M_X''(0) &= n \cdot \left[ (n-1) \cdot (p + 1 - p)^{n-2} \cdot p^2 + (p + 1 - p)^{n-1} \cdot p \ \right] \\
+   M_X''(0) &= n \cdot \left[ (n-1) \cdot 1^{n-2} \cdot p^2 + 1^{n-1} \cdot p \ \right] \\
+   M_X''(0) &= n \cdot \left[ (n-1) \cdot p^2 + p \right] \\
+   M_X''(0) &= n \cdot (np^2 - p^2 + p) \\
+   M_X''(0) &= n^2p^2 - np^2 + np \\
+   M_X''(0) &= np(n - 1)p + np \\
+   M_X''(0) &= n^2p^2 - np^2 + np \\
+   M_X''(0) &= np^2(n - 1) + np
+\end{aligned}
+$$
+
+Portanto, o segundo momento é:
+
+$$
+\mathbb{E}[X^2] = np^2(n-1) + np
+$$
+
+### Poisson
+
+## Distribuição de Poisson
+
+Uma variável aleatória \(X\) com distribuição de Poisson com parâmetro \(\lambda\) tem a seguinte função de massa de probabilidade (PMF):
+
+$$
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots 
+$$
+
+## Função Geradora de Momentos (MGF)
+
+A MGF de uma variável aleatória \(X\), denotada por \(M_X(t)\), é definida como o valor esperado de \(e^{tX}\):
+
+$$
+M_X(t) = \mathbb{E}[e^{tX}]
+$$
+
+Para a distribuição de Poisson, vamos calcular a MGF:
+
+$$
+ M_X(t) = \mathbb{E}[e^{tX}] = \sum_{k=0}^{\infty} e^{tk} P(X = k) 
+$$
+
+Substituindo a PMF de Poisson:
+$$
+M_X(t) = \sum_{k=0}^{\infty} e^{tk} \frac{\lambda^k e^{-\lambda}}{k!} 
+$$
+Podemos reescrever isso como:
+
+$$
+M_X(t) = e^{-\lambda} \sum_{k=0}^{\infty} \frac{(\lambda e^t)^k}{k!} 
+$$
+
+A série somada aqui é a série de Taylor da função exponencial \( e^{\lambda e^t} \):
+
+$$
+M_X(t) = e^{-\lambda} e^{\lambda e^t} = e^{\lambda (e^t - 1)}
+$$
+
+Então, a MGF da distribuição de Poisson é:
+
+$$
+M_X(t) = e^{\lambda (e^t - 1)}
+$$
+
+## Momentos da Distribuição
+
+Os momentos podem ser encontrados derivando a MGF em \(t = 0\).
+
+### Primeiro Momento (Esperança)
+
+O primeiro momento (a esperança) é a primeira derivada da MGF avaliada em \(t = 0\):
+
+$$
+\mathbb{E}[X] = M_X'(0)
+$$
+
+Vamos calcular a derivada:
+
+$$
+M_X'(t) = \frac{d}{dt} e^{\lambda (e^t - 1)}
+$$
+
+Usando a regra da cadeia:
+
+$$
+M_X'(t) = \lambda e^{\lambda (e^t - 1)} \cdot e^t 
+$$
+
+Avaliado em \(t = 0\):
+
+$$
+ M_X'(0) = \lambda e^{\lambda (e^0 - 1)} \cdot e^0 = \lambda e^{0} = \lambda 
+$$
+
+Portanto, a esperança \(\mathbb{E}[X]\) é:
+
+$$
+\mathbb{E}[X] = \lambda
+$$
+
+### Segundo Momento
+
+O segundo momento é a segunda derivada da MGF avaliada em \(t = 0\):
+
+$$
+\mathbb{E}[X^2] = M_X''(0)  
+$$
+
+Vamos calcular a segunda derivada:
+
+$$
+M_X''(t) = \frac{d}{dt} \left( \lambda e^{\lambda (e^t - 1)} e^t \right)  
+$$
+
+Derivando novamente usando a regra do produto e da cadeia:
+
+$$
+M_X''(t) = \lambda \left( \lambda e^{\lambda (e^t - 1)} e^t \cdot e^t + e^{\lambda (e^t - 1)} e^t \right)  
+$$
+
+Simplificando:
+
+$$
+M_X''(t) = \lambda e^{\lambda (e^t - 1)} e^t \left( \lambda e^t + 1 \right)  
+$$
+
+Avaliado em \(t = 0\):
+
+$$
+M_X''(0) = \lambda e^{0} \left( \lambda e^0 + 1 \right) = \lambda ( \lambda + 1 ) = \lambda^2 + \lambda  
+$$
+
+Portanto, o segundo momento \(\mathbb{E}[X^2]\) é:
+
+$$
+\mathbb{E}[X^2] = \lambda^2 + \lambda  
+$$
+
+### Geometrica
+
+### Binomial Negativa
